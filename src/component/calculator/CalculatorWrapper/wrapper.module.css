@@ -1,0 +1,10 @@
+.wrapper{
+    padding: 20px;
+    width: 370px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color:#000000;
+    color:white;
+    border-radius: 25px;
+}

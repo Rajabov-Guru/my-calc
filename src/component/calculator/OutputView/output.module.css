@@ -1,0 +1,21 @@
+.output{
+    box-sizing: border-box;
+    border: 2px solid #555555;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 20px;
+    color: white;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.current_input{
+    font-size: 40px;
+}
+
+.all_input{
+    font-size: 20px;
+}
