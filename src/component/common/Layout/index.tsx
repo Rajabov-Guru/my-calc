@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import styles from './layout.module.css';
-import {IChildren} from "../../../types/main";
+import {IChildren} from "../../../types/common";
 
 const Layout:FC<IChildren> = ({children}) => {
     return (

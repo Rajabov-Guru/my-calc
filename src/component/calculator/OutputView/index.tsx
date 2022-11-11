@@ -1,11 +1,16 @@
-import React from 'react';
-import styles from './output.module.css'
+import React, {FC} from 'react';
+import styles from './output.module.css';
 
-const OutputView = () => {
+interface OutputProps{
+    output:string;
+    result:string;
+}
+
+const OutputView:FC<OutputProps> = ({output, result}) => {
     return (
         <div  className={styles.output}>
-            <div className={styles.all_input}>80/8=</div>
-            <div className={styles.current_input}>10</div>
+            <div className={styles.all_input}>{output}</div>
+            <div className={styles.current_input}>{result}</div>
         </div>
     );
 };

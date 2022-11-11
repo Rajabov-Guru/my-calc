@@ -1,27 +1,34 @@
 import React from 'react'
 import styles from './keyboard.module.css';
-import Button from "../../common/Button";
+import KeyboardBtn from "./KeyboardBtn";
+import {ClickTypes, Operations} from "../../../types/main";
 
 const Keyboard = () => {
     return (
         <div className={styles.keyboard}>
-            <Button sx={{gridColumn:'1/4'}} variant={'secondary'}>C</Button>
-            <Button>÷</Button>
-            <Button variant={'dark'}>7</Button>
-            <Button variant={'dark'}>8</Button>
-            <Button variant={'dark'}>9</Button>
-            <Button>×</Button>
-            <Button variant={'dark'}>4</Button>
-            <Button variant={'dark'}>5</Button>
-            <Button variant={'dark'}>6</Button>
-            <Button>-</Button>
-            <Button variant={'dark'}>1</Button>
-            <Button variant={'dark'}>2</Button>
-            <Button variant={'dark'}>3</Button>
-            <Button>+</Button>
-            <Button sx={{gridColumn:'1/3'}} variant={'dark'}>0</Button>
-            <Button variant={'dark'}>.</Button>
-            <Button>=</Button>
+            <KeyboardBtn
+                response={{type:ClickTypes.OPERATION, value:Operations.CLEAR}}
+                sx={{gridColumn:'1/4'}}
+                variant={'secondary'}/>
+            <KeyboardBtn response={{type:ClickTypes.OPERATION, value:Operations.DIVISION}}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'7'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'8'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'9'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.OPERATION, value:Operations.MULTIPLY}}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'4'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'5'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'6'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.OPERATION, value:Operations.SUBTRACT}}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'1'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'2'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'3'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.OPERATION, value:Operations.ADD}}/>
+            <KeyboardBtn
+                response={{type:ClickTypes.VALUE, value:'0'}}
+                sx={{gridColumn:'1/3'}}
+                variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.VALUE, value:'.'}} variant={'dark'}/>
+            <KeyboardBtn response={{type:ClickTypes.OPERATION, value:Operations.EQUAL}}/>
         </div>
     );
 };

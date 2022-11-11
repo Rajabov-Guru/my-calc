@@ -1,11 +1,24 @@
-import React from "react";
+import {IButton} from "./common";
 
-export interface IChildren{
-    children?:React.ReactNode;
+export enum Operations{
+    ADD='+',
+    SUBTRACT='-',
+    MULTIPLY='×',
+    DIVISION='÷',
+    EQUAL='=',
+    CLEAR='C'
+}
+export enum ClickTypes{
+    OPERATION,
+    VALUE
 }
 
-export  interface IStyle{
-    sx?: React.CSSProperties;
+
+export interface KeyboardClick{
+    type:ClickTypes;
+    value:Operations | string;
 }
 
-export type Variant = "primary" | "dark" | "secondary";
+export interface IKeyboardButton extends IButton{
+    response:KeyboardClick;
+}
