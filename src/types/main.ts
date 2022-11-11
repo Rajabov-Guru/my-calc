@@ -1,24 +1,24 @@
-import {IButton} from "./common";
+import React from "react";
 
-export enum Operations{
-    ADD='+',
-    SUBTRACT='-',
-    MULTIPLY='×',
-    DIVISION='÷',
-    EQUAL='=',
-    CLEAR='C'
-}
-export enum ClickTypes{
-    OPERATION,
-    VALUE
+export interface IChildren{
+    children?:React.ReactNode;
 }
 
-
-export interface KeyboardClick{
-    type:ClickTypes;
-    value:Operations | string;
+export  interface IStyle{
+    sx?: React.CSSProperties;
 }
 
-export interface IKeyboardButton extends IButton{
-    response:KeyboardClick;
+export type Variant = "primary" | "dark" | "secondary";
+
+export enum BtnTypes{
+    FX,
+    OPERATOR,
+    NUMERIC
+}
+
+export interface IButton extends IChildren, IStyle{
+    variant?:Variant;
+    onClick:(value:string,type:BtnTypes)=>void;
+    value:string;
+    type:BtnTypes;
 }

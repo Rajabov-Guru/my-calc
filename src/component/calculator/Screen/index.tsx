@@ -6,13 +6,13 @@ interface OutputProps{
     result:string;
 }
 
-const OutputView:FC<OutputProps> = ({output, result}) => {
+const Screen:FC<OutputProps> = ({output, result}) => {
     return (
-        <div  className={styles.output}>
+        <div  className={styles.screen}>
             <div className={styles.all_input}>{output}</div>
             <div className={styles.current_input}>{result}</div>
         </div>
     );
 };
 
-export default OutputView;
+export default Screen;

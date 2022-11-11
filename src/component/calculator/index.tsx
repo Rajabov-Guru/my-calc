@@ -1,86 +1,94 @@
-import React, {useContext, useEffect, useState} from 'react';
-import CalculatorWrapper from "./CalculatorWrapper";
-import OutputView from "./OutputView";
-import Keyboard from "./KeyBoard";
-import {Context} from "../../context/context";
-import {ClickTypes, Operations} from "../../types/main";
-import {calculate} from "../../helpers/helper";
+import React, {useState} from 'react';
+import Screen from "./Screen";
+import styles from './calc.module.css';
+import {BtnTypes} from "../../types/main";
+import Keyboard from "./Keyboard";
+import {operate} from "../../helpers/helper";
+
 
 const Calculator = () => {
-    const {newInput, setNewInput} = useContext(Context);
-
-    const [operation, setOperation] = useState<Operations | null>(null);
-    const [firstOperand, setFirstOperand] = useState<number | null>(null);
-
-    const [output, setOutput] = useState<string>('0');
-    const [result, setResult] = useState<string>('');
+    const [accValue, setAccValue] = useState<number | null>(null);
+    const [screenValue, setScreenValue] = useState<string>("0");
+    const [topScreenValue, setTopScreenValue] = useState<string>("0");
+    const [currentOperator, setCurrentOperator] = useState<string | null>(null);
+    const [expectsOperand, setExpectsOperand] = useState<boolean>(false);
 
 
-    useEffect(()=>{
-        if(newInput.type == ClickTypes.OPERATION){
-            handleOperations(newInput.value);
+
+    const handleClickNumericKey = (value:number) => {
+        if (expectsOperand) {
+            setScreenValue(String(value));
+            setExpectsOperand(false);
         }
-        else handleValues(newInput.value);
-    },[newInput]);
+        else
+            setScreenValue(screenValue === "0" ? String(value) : screenValue + value);
+    }
 
-
-    useEffect(()=>{
-        if(operation){
-            setOutput(`${firstOperand}${operation}`)
+    const addDecimalPoint = () => {
+        if (expectsOperand) {
+            setScreenValue("0.");
         }
-    },[operation])
+        else {
+            if (!screenValue.includes("."))
+                setScreenValue(screenValue + ".");
+        }
+        setExpectsOperand(false);
+    }
 
-    const handleOperations = (value:string)=>{
+    const handleClickOperator = (operator:string) => {
+        const inputValue = parseFloat(screenValue);
+        if (accValue === null) {
+            setAccValue(inputValue);
+            setTopScreenValue(`${inputValue} ${operator}`)
+        }
+        else {
+            if (currentOperator) {
+                const resultValue = operate(currentOperator, accValue, inputValue);
+                if(resultValue) setAccValue(resultValue);
+                if(resultValue==Infinity) {
+                    setScreenValue('Ошибка!');
+                }else setScreenValue(String(resultValue));
+
+                if(currentOperator!=='=') setTopScreenValue(`${topScreenValue} ${inputValue} =`);
+                else setTopScreenValue(`${inputValue} ${operator}`);
+            }
+        }
+        setExpectsOperand(true);
+        setCurrentOperator(operator);
+    }
+
+    const handleClickFunctionKey = (value:string) => {
         switch (value) {
-            case Operations.CLEAR:
-                clear();
-                break;
-            case Operations.EQUAL:
-                if(firstOperand!==null && operation) {
-                    let res = calculate(operation,firstOperand,+result);
-                    setResult(res);
-                    setFirstOperand(+res);
-                    setOutput(`${firstOperand} ${operation} ${+result} = `);
-                    setOperation(null);
-                }
-                break;
-            default:
-                if(!firstOperand) setFirstOperand(+result);
-                else if (operation) {
-                    let res = '';
-                    res = calculate(operation,firstOperand,+result);
-                    setFirstOperand(+res);
-                    setOutput(`${+res} ${operation}`);
-                }
-                setOperation(newInput.value as Operations);
-                setResult('0');
+            case "C": allClear(); break;
+            case ".": addDecimalPoint(); break;
+        };
+    }
+
+    const handleActionToPerform = (value:string, keyType:BtnTypes) => {
+        switch (keyType) {
+            case BtnTypes.FX: handleClickFunctionKey(value); break;
+            case BtnTypes.NUMERIC: handleClickNumericKey(+value); break;
+            case BtnTypes.OPERATOR: handleClickOperator(value); break;
         }
     }
 
-    const handleValues = (value:string)=>{
-        if(value.length+result.length<=16){
-            if(result==='0' && value!=='.') setResult(newInput.value);
-            else setResult(result+newInput.value);
-        }
-    }
-
-    const clear = ()=>{
-        setNewInput({type:ClickTypes.VALUE, value:'0'});
-        setOutput('0');
-        setResult('');
-        setFirstOperand(null);
-        setOperation(null);
+    const allClear = () => {
+        setAccValue(null);
+        setScreenValue("0");
+        setCurrentOperator(null);
+        setExpectsOperand(false);
+        setTopScreenValue('0');
     }
 
 
     return (
-        <CalculatorWrapper>
-            <OutputView
-                output={output}
-                result={result}
+        <div className={styles.wrapper}>
+            <Screen
+                output={topScreenValue}
+                result={screenValue}
             />
-            <Keyboard/>
-        </CalculatorWrapper>
+            <Keyboard actionToPerform={handleActionToPerform}/>
+        </div>
     );
 };
 
